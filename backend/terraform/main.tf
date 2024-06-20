@@ -880,13 +880,13 @@ resource "aws_security_group" "service_security_group" {
     }
 }
 
-#  data "aws_key_pair" "existing_key_pair" {
-#    key_name = "my-key-pair" 
-#  }
+ data "aws_key_pair" "existing_key_pair" {
+   key_name = "my-key-pair" 
+ }
 
 # resource "aws_instance" "frontend_ec2_instance" {
 #   ami           = "ami-0a3c3a20c09d6f377" #AZN LINUX
-#   instance_type = "t2.micro" 
+#   instance_type = "t2.small" 
 #   key_name      = data.aws_key_pair.existing_key_pair.key_name
 #   associate_public_ip_address = true
 #   subnet_id = module.vpc.public_subnets[0]

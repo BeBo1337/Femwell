@@ -82,50 +82,56 @@ const PostHeader: FC<PostHeaderProps> = ({
           <Box px={2} color={"gray.400"}>
             ● {timeAgo}
           </Box>
-          {authUser?.id === userId && !isLoading && (
-            <Menu
-              isOpen={menuDisclosure.isOpen}
-              onClose={closeMenu}
-              closeOnSelect={false}
-            >
-              <MenuButton onClick={menuDisclosure.onOpen}>
-                <Box cursor={"pointer"} px={3} mr={-2}>
-                  <FontAwesomeIcon icon={faEllipsisVertical} />
-                </Box>
-              </MenuButton>
-              <Portal>
-                <MenuList>
-                  <MenuItem
-                    onClick={() => {
-                      closeMenu();
-                      postUpdateDisclosure.onOpen();
-                    }}
-                  >
-                    Edit Post
-                  </MenuItem>
-                  <MenuItem
-                    cursor={confirmDelete ? "default" : "pointer"}
-                    onClick={() => {
-                      setConfirmDelete(true);
-                    }}
-                  >
-                    {confirmDelete ? "Are you sure?" : "Delete Post"}
-                    {confirmDelete && (
-                      <Box
-                        px={2}
-                        ml={"auto"}
-                        onClick={handleDeletePostClick}
-                        cursor={"pointer"}
-                        _hover={{ color: "red" }}
+          {(authUser?.id === userId || authUser?.role === "Padulla") &&
+            !isLoading && (
+              <Menu
+                isOpen={menuDisclosure.isOpen}
+                onClose={closeMenu}
+                closeOnSelect={false}
+              >
+                <MenuButton onClick={menuDisclosure.onOpen}>
+                  <Box cursor={"pointer"} px={3} mr={-2}>
+                    <FontAwesomeIcon icon={faEllipsisVertical} />
+                  </Box>
+                </MenuButton>
+                <Portal>
+                  <MenuList>
+                    {authUser?.id === userId && (
+                      <MenuItem
+                        onClick={() => {
+                          closeMenu();
+                          postUpdateDisclosure.onOpen();
+                        }}
                       >
-                        <DeleteIcon />
-                      </Box>
+                        Edit Post
+                      </MenuItem>
                     )}
-                  </MenuItem>
-                </MenuList>
-              </Portal>
-            </Menu>
-          )}
+                    {(authUser?.id === userId ||
+                      authUser?.role === "Padulla") && (
+                      <MenuItem
+                        cursor={confirmDelete ? "default" : "pointer"}
+                        onClick={() => {
+                          setConfirmDelete(true);
+                        }}
+                      >
+                        {confirmDelete ? "Are you sure?" : "Delete Post"}
+                        {confirmDelete && (
+                          <Box
+                            px={2}
+                            ml={"auto"}
+                            onClick={handleDeletePostClick}
+                            cursor={"pointer"}
+                            _hover={{ color: "red" }}
+                          >
+                            <DeleteIcon />
+                          </Box>
+                        )}
+                      </MenuItem>
+                    )}
+                  </MenuList>
+                </Portal>
+              </Menu>
+            )}
         </Flex>
       </Flex>
 

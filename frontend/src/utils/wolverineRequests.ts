@@ -482,6 +482,7 @@ export interface SendMessageInput {
   userId: string;
   liveChatId: number;
   content: string;
+  isPadullaSent?: boolean;
 }
 
 export const ADD_PADULLA_TO_LIVE_CHAT_MUTATION = gql`
