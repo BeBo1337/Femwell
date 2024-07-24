@@ -1,6 +1,6 @@
-import { ObjectType, Field } from '@nestjs/graphql';
+import { ObjectType, Field, GraphQLISODateTime } from '@nestjs/graphql';
 import { GraphQLString } from 'graphql/type';
-import { GraphQLDate, GraphQLUUID } from 'graphql-scalars';
+import { GraphQLUUID } from 'graphql-scalars';
 import { Like, Comment, CommunityHubUser } from '../../../index';
 import { PostsFilter } from '../dto/posts.filter.input';
 import { Prisma } from '@prisma/client';
@@ -31,7 +31,7 @@ export class Post {
   @Field(() => Boolean)
   isAnonymous!: boolean;
 
-  @Field(() => GraphQLDate)
+  @Field(() => GraphQLISODateTime)
   createdAt!: Date;
 
   static buildFilter(filter: PostsFilter): Prisma.PostWhereInput {

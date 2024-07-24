@@ -1,6 +1,6 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { GraphQLString } from 'graphql/type';
-import {GraphQLPositiveInt, GraphQLUUID} from 'graphql-scalars';
+import { GraphQLPositiveInt, GraphQLUUID } from 'graphql-scalars';
 
 @InputType()
 export class SendMessageInput {

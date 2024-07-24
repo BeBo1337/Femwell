@@ -24,6 +24,7 @@ export class CommentService {
           content: input.content,
           userId: input.userId,
           postId: input.postId,
+          createdAt: new Date(),
         },
       });
       this.logger.info(`Comment created successfully with id: ${result.id}.`);

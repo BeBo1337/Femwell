@@ -1,6 +1,6 @@
-import { ObjectType, Field } from '@nestjs/graphql';
+import { ObjectType, Field, GraphQLISODateTime } from '@nestjs/graphql';
 import { GraphQLString } from 'graphql/type';
-import { GraphQLUUID, GraphQLPositiveInt, GraphQLDate } from 'graphql-scalars';
+import { GraphQLUUID, GraphQLPositiveInt } from 'graphql-scalars';
 import { CommunityHubUser } from '../../shared/entities/communityHubUser.entity';
 
 @ObjectType()
@@ -17,7 +17,7 @@ export class Comment {
   @Field(() => GraphQLUUID)
   postId!: string;
 
-  @Field(() => GraphQLDate)
+  @Field(() => GraphQLISODateTime)
   createdAt!: Date;
 
   @Field(() => CommunityHubUser)
