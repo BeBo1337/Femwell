@@ -39,7 +39,12 @@ const LikedPosts: FC<SideBarProps> = ({}) => {
         await getPosts({ queryType: queryTypes.LIKED_POSTS });
       }
     } else {
-      showToast("Error", "Please Login to use this feature", "error");
+      showToast(
+        "Error",
+        "Please Login to use this feature",
+        "error",
+        "NotLogged",
+      );
     }
   };
 

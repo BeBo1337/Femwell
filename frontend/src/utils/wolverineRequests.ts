@@ -40,6 +40,7 @@ export const UPDATE_USER_MUTATION = gql`
       email
       username
       phoneNumber
+      readLater
     }
   }
 `;
@@ -395,6 +396,14 @@ export const CREATE_LIVE_CHAT_MUTATION = gql`
         id
         username
         profilePic
+      }
+      messages {
+        id
+        content
+        userId
+        seen
+        createdAt
+        updatedAt
       }
     }
   }

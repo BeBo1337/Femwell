@@ -121,6 +121,12 @@ const LiveChat: FC<LiveChatProps> = ({ isOpen, onClose }) => {
       const newChat = chats[0];
       setMessages(newChat.messages);
       setChatId(newChat.id);
+      if (newChat.users.length > 1) {
+        const padulla = newChat.users.find((user) => user.id !== authUser?.id);
+        setPadullaProfilePic(padulla?.profilePic || "");
+        setPadullaUsername(padulla?.username || "");
+        setIsLoadingPadulla(false);
+      }
     }
   }, [chats]);
 
@@ -139,7 +145,6 @@ const LiveChat: FC<LiveChatProps> = ({ isOpen, onClose }) => {
     }
   }, [messageData]);
 
-  //HERE HERE HERE ITS NOT .NEWMESSAGE ALSO NEED TO CHECK WHAT IS THE PROFILE PIC AND USERNAME OF THE PADULLA
   useEffect(() => {
     console.log("padulla trying to join...", padullaData, padullaError);
     if (padullaData?.padullaEnteredLiveChat) {
@@ -219,7 +224,7 @@ const LiveChat: FC<LiveChatProps> = ({ isOpen, onClose }) => {
           pb="2"
           borderBottom="2px solid var(--secondary-color)"
         >
-          {isLoadingChat || isLoadingPadulla ? (
+          {isLoadingPadulla ? (
             <Flex align="center">
               <Spinner
                 thickness="2px"

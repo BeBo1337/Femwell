@@ -2,6 +2,9 @@ import { Box, Flex, Text, useMediaQuery } from "@chakra-ui/react";
 import { FC } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPen } from "@fortawesome/free-solid-svg-icons";
+import useAuthStore from "../../../store/authStore";
+import useShowToast from "../../../hooks/useShowToast";
+import { Navigate } from "react-router-dom";
 
 interface SideBarProps {
   btnText?: string;
@@ -14,6 +17,22 @@ const EditProfile: FC<SideBarProps> = ({}) => {
   const [isLargerThan400] = useMediaQuery("(min-width: 400px)");
   const [isLargerThan760] = useMediaQuery("(min-width: 760px)");
 
+  const authUser = useAuthStore((state) => state.user);
+  const showToast = useShowToast();
+
+  const handleEditProfile = () => {
+    if (authUser) {
+      <Navigate to="/account" />;
+    } else {
+      showToast(
+        "Error",
+        "Please Login to use this feature",
+        "error",
+        "NotLogged",
+      );
+    }
+  };
+
   return (
     <Box
       w={isLargerThan760 ? "full" : ""}
@@ -22,7 +41,9 @@ const EditProfile: FC<SideBarProps> = ({}) => {
       cursor={"pointer"}
       borderRadius={6}
       _hover={{ bg: "var(--hover-color-dim)" }}
-      onClick={() => {}}
+      onClick={() => {
+        handleEditProfile();
+      }}
     >
       <Flex
         p={2}

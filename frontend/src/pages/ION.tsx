@@ -36,13 +36,13 @@ const ION = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (authUser && authUser.laterArticles) {
+    if (authUser && authUser.readLater) {
       const filteredArticles = articles.filter((article) =>
-        authUser.laterArticles?.includes(article.id),
+        authUser.readLater?.includes(article.id),
       );
       setLaterArticles(filteredArticles);
       const remainingArticles = articles.filter(
-        (article) => !authUser.laterArticles?.includes(article.id),
+        (article) => !authUser.readLater?.includes(article.id),
       );
       setAllArticles(remainingArticles);
     } else {
@@ -241,9 +241,15 @@ const ION = () => {
         </VStack>
 
         <Modal preserveScrollBarGap isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent bg={modalBgColor}>
-            <ModalHeader fontSize={30}>{selectedArticle?.title}</ModalHeader>
+          <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(3px) " />
+          <ModalContent
+            bg={modalBgColor}
+            maxWidth="80%" /* Bigger size */
+            width="auto" /* Adjust width as needed */
+          >
+            <ModalHeader fontSize={30} pt={7}>
+              {selectedArticle?.title}
+            </ModalHeader>
             <ModalCloseButton />
             <ModalBody>{selectedArticle?.content}</ModalBody>
           </ModalContent>

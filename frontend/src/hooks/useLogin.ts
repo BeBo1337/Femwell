@@ -61,21 +61,16 @@ const useLogin = () => {
           const likedPostIds = userResult.data.oneUser.likes.map(
             (like: any) => like.postId,
           );
-          localStorage.setItem(
-            "user",
-            JSON.stringify({
-              ...userResult.data.oneUser,
-              posts: postIds,
-              likes: likedPostIds,
-            }),
-          );
-          loginUser({
+
+          const userData = {
             ...userResult.data.oneUser,
             posts: postIds,
             likes: likedPostIds,
             jwt: jwt,
             refreshToken: refreshToken,
-          });
+          };
+          localStorage.setItem("user", JSON.stringify(userData));
+          loginUser(userData);
           showToast("Success", "Logged in successfully", "success");
           return true;
         }

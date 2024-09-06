@@ -34,7 +34,12 @@ const NewPost: FC<SideBarProps> = ({}) => {
         onClick={() => {
           authUser
             ? onOpen()
-            : showToast("Error", "Please Login to use this feature", "error");
+            : showToast(
+                "Error",
+                "Please Login to use this feature",
+                "error",
+                "NotLogged",
+              );
         }}
       >
         <Flex

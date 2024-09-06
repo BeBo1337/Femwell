@@ -10,7 +10,7 @@ export interface User {
   likes?: Post[];
   questionnaire?: Questionnare;
   profilePic?: string;
-  laterArticles?: string[];
+  readLater?: string[];
 }
 
 export interface AuthUser {
@@ -24,6 +24,6 @@ export interface AuthUser {
   likes?: string[];
   questionnaire?: Questionnare;
   profilePic?: string;
-  laterArticles?: string[];
+  readLater?: string[];
   role: string;
 }

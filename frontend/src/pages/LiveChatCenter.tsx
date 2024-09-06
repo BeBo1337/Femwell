@@ -25,7 +25,7 @@ import useChatStore from "../store/chatStore";
 import useGetLiveChats from "../hooks/useGetLiveChats";
 import useCreateChatMessage from "../hooks/useCreateChatMessage";
 import usePadullaJoinChat from "../hooks/usePadullaJoinChat";
-// import useSetMessagesSeen from "../hooks/useSetMessagesSeen";
+import useSetMessagesSeen from "../hooks/useSetMessagesSeen";
 
 const LiveChatCenter: FC<{}> = () => {
   const [isLargerThan650] = useMediaQuery("(min-width: 650px)");
@@ -50,7 +50,7 @@ const LiveChatCenter: FC<{}> = () => {
   const { handleGetChats } = useGetLiveChats();
   const { handleJoinChat } = usePadullaJoinChat();
   const { handleCreateChatMessage } = useCreateChatMessage();
-  // const { handleSetMessageSeen } = useSetMessagesSeen();
+  const { handleSetMessageSeen } = useSetMessagesSeen();
   const chats = useChatStore((state) => state.chats);
 
   const panelBackgoundColor = useColorModeValue("white", "#533142");
@@ -59,6 +59,7 @@ const LiveChatCenter: FC<{}> = () => {
 
   const handleSelectUser = async (username: string, chatId: number) => {
     addPadullaToChat(chatId);
+    console.log("new selected user", username);
     setSelectedUser(username);
     handleSeenMsg(chatId, "Seen");
     const newTabIndex = avatars.findIndex(
@@ -78,9 +79,10 @@ const LiveChatCenter: FC<{}> = () => {
   };
 
   const handleSeenMsg = async (chatId: number, status: string) => {
-    // if (status === "Seen") {
-    //   await handleSetMessageSeen(chatId);
-    // }
+    console.log(chatId);
+    if (status === "Seen") {
+      await handleSetMessageSeen(chatId);
+    }
     const i = chats.findIndex((chat) => chat.id == chatId);
     if (i !== -1) {
       const updatedAvatars = [...avatars];
@@ -119,7 +121,7 @@ const LiveChatCenter: FC<{}> = () => {
     if (chats.length > 0 && authUser) {
       const newAvatars: AvatarProps[] = chats.map((chat, index) => {
         const user = chat.users.find((user) => user.id !== authUser.id);
-        console.log(chat.messages[chat.messages.length - 1]?.seen);
+        console.log(chat.id, chat.messages[chat.messages.length - 1]?.seen);
         return {
           username: user ? user.username : "NA",
           profilePic: user ? user.profilePic : "",
@@ -130,6 +132,7 @@ const LiveChatCenter: FC<{}> = () => {
               : chat.messages[chat.messages.length - 1]?.seen,
         };
       });
+      console.log("selected user", selectedUser);
       console.log("tabIndex", tabIndex);
       console.log("newAvatars", newAvatars);
       setAvatars(newAvatars);
@@ -144,7 +147,7 @@ const LiveChatCenter: FC<{}> = () => {
   return (
     <div className="page">
       <Box
-        p={isLargerThan650 ? 5 : 0}
+        p={isLargerThan650 ? 5 : 3}
         maxWidth={isLargerThan930 ? "1400px" : "100%"}
         mx="auto"
       >
@@ -171,12 +174,12 @@ const LiveChatCenter: FC<{}> = () => {
               minWidth={"200px"}
             >
               {chats.map((chat, index) => (
-                <Tab py={4} key={chat.id}>
+                <Tab py={4} key={chat.id} justifyContent={"flex-start"} px={2}>
                   <Box position="relative" display="inline-block">
                     <Avatar
                       size={"sm"}
                       name={avatars[index]?.username || ""}
-                      mr={3}
+                      mr={2}
                       src={avatars[index]?.profilePic || ""}
                     >
                       <AvatarBadge
@@ -188,11 +191,11 @@ const LiveChatCenter: FC<{}> = () => {
                         }
                       />
                     </Avatar>
-                    {avatars[index]?.msgSeen === false && (
+                    {/* {avatars[index]?.msgSeen === false && (
                       <Box position="absolute" top="-2" right="0">
                         <FontAwesomeIcon icon={faMessage} color="crimson" />
                       </Box>
-                    )}
+                    )} */}
                   </Box>
                   <Text>{`Chat with ${avatars[index]?.username}`}</Text>
                 </Tab>

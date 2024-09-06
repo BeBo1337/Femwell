@@ -117,10 +117,10 @@ const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose, onInputFormOpen }) => {
               w="full"
               onClick={() => {
                 onClose();
-                navigate("/premium");
+                navigate("/zen");
               }}
             >
-              Premium
+              Zen
             </Button>
             {!authUser && (
               <Button

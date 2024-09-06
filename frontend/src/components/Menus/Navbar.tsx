@@ -88,12 +88,8 @@ const Navbar: FC<{}> = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link
-                  to="/premium"
-                  className="nav-links"
-                  onClick={onSideMenuClose}
-                >
-                  Premium
+                <Link to="/zen" className="nav-links" onClick={onSideMenuClose}>
+                  Zen
                 </Link>
               </li>
               {!authUser ? (

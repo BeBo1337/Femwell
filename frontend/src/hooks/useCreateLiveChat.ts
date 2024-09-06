@@ -11,13 +11,14 @@ const useCreateLiveChat = () => {
   const authUser = useAuthStore((state) => state.user);
   const createChat = useChatStore((state) => state.createChat);
   const chats = useChatStore((state) => state.chats);
+
   const showToast = useShowToast();
 
   const handleCreateChat = async () => {
     if (isLoadingChat || chats.length > 0) return;
+
     if (authUser) {
       setIsLoadingChat(true);
-
       try {
         const createChatResponse = await axios.post(
           `${import.meta.env.VITE_WOLVERINE_ENDPOINT}/graphql`,
@@ -40,7 +41,7 @@ const useCreateLiveChat = () => {
         const newChat = {
           id: createChatResult.id,
           users: createChatResult.users,
-          messages: [],
+          messages: createChatResult.messages || [],
           createdAt: createChatResult.createdAt,
           updatedAt: createChatResult.updatedAt,
         };

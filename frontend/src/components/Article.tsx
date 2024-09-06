@@ -47,7 +47,7 @@ const Article: FC<ArticleProps> = ({
         <Flex justifyContent={"center"} w={"100%"}>
           <h1
             style={{
-              fontSize: "1.5rem",
+              fontSize: "1.2rem",
               fontFamily: "monospace",
               color: "var(--tertiary-color)",
             }}

@@ -4,7 +4,7 @@ import { Heading, List, ListItem } from "@chakra-ui/react";
 const articles: ArticleModel[] = [
   {
     id: "1",
-    title: "Article 1",
+    title: "Infection | Excessive bleeding | Adhesions",
     content: (
       <div>
         <Heading as="h1" size="md">
@@ -23,9 +23,10 @@ const articles: ArticleModel[] = [
   },
   {
     id: "2",
-    title: "Article 2",
+    title: "How does an abortion look and feels",
     content: "Content 1",
-    summary: "",
+    summary:
+      "What a miscarriage look and feel like, from the moment of receiving the news through the active phase of natural expulsion or with the induction of Cytotec pills.",
     recommended: true,
   },
   {

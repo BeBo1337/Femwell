@@ -147,12 +147,13 @@ const useSignupEmailPassword = () => {
       console.log("--------------------");
       setShowEmailVerifyPage(false);
       if (userResult) {
-        localStorage.setItem("user", JSON.stringify(userResult.data.oneUser));
-        loginUser({
+        const userData = {
           ...userResult.data.oneUser,
           jwt: confirmResult.data.confirm.jwt,
           refreshToken: confirmResult.data.confirm.refreshToken,
-        });
+        };
+        localStorage.setItem("user", JSON.stringify(userData));
+        loginUser(userData);
 
         return true;
       } else {

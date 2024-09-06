@@ -7,6 +7,7 @@ type State = {
   addUserToChat: (chatId: number, users: any) => void;
   deleteChat: (chatId: number) => void;
   createMessage: (message: ChatMsg, chatId: number) => void;
+  setMsgSeen: (chatId: number) => void;
   setChats: (chats: Chat[]) => void;
 };
 
@@ -33,6 +34,22 @@ const useChatStore = create<State>((set) => ({
       ...state,
       chats: state.chats.map((chat) =>
         chat.id == chatId ? { ...chat, users } : chat,
+      ),
+    })),
+  setMsgSeen: (chatId) =>
+    set((state) => ({
+      ...state,
+      chats: state.chats.map((chat) =>
+        chat.id === chatId
+          ? {
+              ...chat,
+              messages: chat.messages.map((message, index, array) =>
+                index === array.length - 1
+                  ? { ...message, seen: true }
+                  : message,
+              ),
+            }
+          : chat,
       ),
     })),
   setChats: (chats) => set((state) => ({ ...state, chats })),

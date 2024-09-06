@@ -18,6 +18,7 @@ import AccountSettings from "./pages/AccountSettings";
 import ION from "./pages/ION";
 import Welcome from "./pages/Welcome";
 import LiveChatCenter from "./pages/LiveChatCenter";
+import Zen from "./pages/Zen";
 
 const config = {
   initialColorMode: "light",
@@ -98,6 +99,7 @@ const App: FC<{}> = () => {
             path="/account"
             element={authUser ? <AccountSettings /> : <Navigate to="/" />}
           />
+          <Route path="/zen" element={<Zen />} />
           <Route
             path="/livechats"
             element={
@@ -106,9 +108,13 @@ const App: FC<{}> = () => {
               ) : (
                 <Navigate to="/" />
               )
-            } //should only be padulla user
+            }
           />
           <Route path="/ION" element={<ION />} />
+          <Route
+            path="*"
+            element={!authUser ? <Welcome /> : <Navigate to="/home" />}
+          />
         </Routes>
       </BrowserRouter>
     </ChakraProvider>

@@ -1,7 +1,11 @@
 import { useState } from "react";
 import useAuthStore from "../store/authStore";
-// import { firestore } from "../firebase/firebase";
-// import { doc, updateDoc } from "firebase/firestore";
+import axios from "axios";
+import { print } from "graphql";
+import {
+  UPDATE_USER_MUTATION,
+  UpdateUserInput,
+} from "../utils/wolverineRequests";
 
 const useUpdateLaterArticles = () => {
   const [isUpdating, setIsUpdating] = useState(false);
@@ -12,23 +16,43 @@ const useUpdateLaterArticles = () => {
     if (isUpdating || !authUser || !articleId) return false;
     setIsUpdating(true);
 
-    // const userDocRef = doc(firestore, "users", authUser.id);
-
     try {
       let updatedLaterArticles;
-      if (authUser.laterArticles?.includes(articleId))
-        updatedLaterArticles = authUser.laterArticles.filter(
+      if (authUser.readLater?.includes(articleId))
+        updatedLaterArticles = authUser.readLater.filter(
           (id) => id !== articleId,
         );
-      else
-        updatedLaterArticles = [...(authUser.laterArticles || []), articleId];
+      else updatedLaterArticles = [...(authUser.readLater || []), articleId];
+
+      let updateUserInput: UpdateUserInput = {
+        id: authUser.id,
+        username: authUser.username,
+        readLater: updatedLaterArticles,
+      };
+
+      console.log("updateUserInput", updateUserInput);
+      const updateUserResponse = await axios.post(
+        `${import.meta.env.VITE_WOLVERINE_ENDPOINT}/graphql`,
+        {
+          query: print(UPDATE_USER_MUTATION),
+          variables: { updateUserInput },
+        },
+        {
+          headers: {
+            authorization: authUser.jwt,
+          },
+        },
+      );
+
+      const updateUserResult = await updateUserResponse.data.data;
+      console.log("updatedUserResult", updateUserResult);
+      console.log("--------------------");
 
       const updatedUser = {
         ...authUser,
-        laterArticles: updatedLaterArticles,
+        readLater: updatedLaterArticles,
       };
 
-      // await updateDoc(userDocRef, updatedUser);
       localStorage.setItem("user", JSON.stringify(updatedUser));
       setAuthUser(updatedUser);
 

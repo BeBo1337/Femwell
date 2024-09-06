@@ -52,7 +52,12 @@ const useCreateChatMessage = () => {
 
         return false;
       } catch (error: any) {
-        showToast("Error", "Current chat unavailable", "error");
+        showToast(
+          "Error",
+          "Please Login to use this feature",
+          "error",
+          "NotLogged",
+        );
         setIsLoading(false);
         return false;
       }
