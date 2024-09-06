@@ -18,6 +18,16 @@ services:
       - "./development/localstack:/var/lib/localstack"
       - "./development/localstack:/etc/localstack/init/ready.d"
     hostname: localstack
+  mysql:
+    image: mysql:5.7
+    ports:
+      - '3306:3306'
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=wolverine
+    networks:
+      - backend_network
   vault:
     ports:
       - '3002:3002'
@@ -29,7 +39,7 @@ services:
     restart: 'unless-stopped'
     volumes:
       - .:/home/node
-      - ./node_modules:/home/node
+      - /home/node/node_modules
     env_file:
       - 'apps/vault/development/local.env'
       - 'development/local-base.env'
@@ -48,7 +58,7 @@ services:
     restart: 'unless-stopped'
     volumes:
       - .:/home/node
-      - ./node_modules:/home/node
+      - /home/node/node_modules
     env_file:
       - 'apps/heimdall/development/local.env'
       - 'development/local-base.env'
@@ -67,10 +77,12 @@ services:
     restart: 'unless-stopped'
     volumes:
       - .:/home/node
-      - ./node_modules:/home/node
+      - /home/node/node_modules
     env_file:
       - 'apps/wolverine/development/local.env'
       - 'development/local-base.env'
+    depends_on:
+      - mysql
     networks:
       - backend_network
   denden:
@@ -84,7 +96,7 @@ services:
     restart: 'unless-stopped'
     volumes:
       - .:/home/node
-      - ./node_modules:/home/node
+      - /home/node/node_modules
     env_file:
       - 'apps/denden/development/local.env'
       - 'development/local-base.env'

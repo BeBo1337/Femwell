@@ -40,7 +40,24 @@ export class LiveChatService {
   async createLiveChat(userId: string): Promise<LiveChat> {
     try {
       this.logger.info(`Trying to create LiveChat for user with id: ${userId}`);
-      const res = await this.prisma.liveChat.create({
+      const liveChat = await this.prisma.liveChat.findFirst({
+        where: {
+          users: {
+            some: {
+              id: userId,
+            },
+          },
+        },
+        include: {
+          users: true,
+          messages: true,
+        },
+      });
+      if (liveChat) {
+        this.logger.info(`LiveChat already exists: ${liveChat}`);
+        return liveChat;
+      }
+      const createdChat = await this.prisma.liveChat.create({
         data: {
           users: {
             connect: {
@@ -54,13 +71,13 @@ export class LiveChatService {
       });
       await this.prisma.liveChatUsers.create({
         data: {
-          liveChatId: res.id,
+          liveChatId: createdChat.id,
           userId: userId,
         },
       });
-      this.logger.info(`New LiveChat created: ${JSON.stringify(res)}`);
-      await this.cacheService.set(`${res.id}`, res);
-      return res;
+      this.logger.info(`New LiveChat created: ${createdChat}`);
+      await this.cacheService.set(`${createdChat.id}`, createdChat);
+      return createdChat;
     } catch (e) {
       this.error.handleError(new InternalServerErrorException(e));
     }
@@ -71,7 +88,7 @@ export class LiveChatService {
     padullaId: string,
   ): Promise<LiveChat> {
     try {
-      const res = await this.prisma.liveChat.update({
+      const liveChat = await this.prisma.liveChat.update({
         where: {
           id: liveChatId,
         },
@@ -94,7 +111,7 @@ export class LiveChatService {
         },
       });
       this.logger.info(`Padulla added to LiveChat. Padulla id: ${padullaId}`);
-      return res;
+      return liveChat;
     } catch (e) {
       this.error.handleError(new InternalServerErrorException(e));
     }
@@ -103,12 +120,12 @@ export class LiveChatService {
   async sendMessage(SendMessageInput: SendMessageInput) {
     const { userId, liveChatId, content, isPadullaSent } = SendMessageInput;
     try {
-      const res = await this.prisma.message.create({
+      const message = await this.prisma.message.create({
         data: {
           content,
           liveChatId,
           userId,
-          seen: isPadullaSent ?? false
+          seen: isPadullaSent ?? false,
         },
         include: {
           liveChat: {
@@ -119,9 +136,9 @@ export class LiveChatService {
           user: true, // show the user that sent the message
         },
       });
-      this.logger.info(`New message sent: ${JSON.stringify(res)}`);
+      this.logger.info(`New message sent: ${message}`);
       await this.cacheService.del(`${liveChatId}_messages`);
-      return res;
+      return message;
     } catch (e) {
       this.error.handleError(new InternalServerErrorException(e));
     }
@@ -152,13 +169,13 @@ export class LiveChatService {
   async deleteLiveChat(liveChatId: number): Promise<LiveChat> {
     try {
       this.logger.info(`Deleting LiveChar with id: ${liveChatId}.`);
-      const res = this.prisma.liveChat.delete({
+      const deletedChat = this.prisma.liveChat.delete({
         where: {
           id: liveChatId,
         },
       });
-      this.logger.info(`LiveChat deleted: ${JSON.stringify(res)}`);
-      return res;
+      this.logger.info(`LiveChat deleted: ${deletedChat}`);
+      return deletedChat;
     } catch (e) {
       this.error.handleError(new NotFoundException(e));
     }
