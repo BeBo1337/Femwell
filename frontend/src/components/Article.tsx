@@ -49,7 +49,8 @@ const Article: FC<ArticleProps> = ({
             style={{
               fontSize: "1.2rem",
               fontFamily: "monospace",
-              color: "var(--tertiary-color)",
+              color: "black",
+              fontWeight: "bold",
             }}
           >
             {title}
@@ -62,7 +63,7 @@ const Article: FC<ArticleProps> = ({
           icon={faBars}
           style={{
             marginRight: "4px",
-            color: "var(--tertiary-color)",
+            color: "black",
             cursor: "grab",
           }}
         />

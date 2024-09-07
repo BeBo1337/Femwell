@@ -15,10 +15,6 @@ import {
 import { FC, useEffect, useState } from "react";
 import useAuthStore from "../store/authStore";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { ChatMsg } from "../models";
-import { faMessage } from "@fortawesome/free-solid-svg-icons";
-
 import ChatInterface from "../components/ChatInterface";
 import { AvatarProps } from "../models/avatarProps.model";
 import useChatStore from "../store/chatStore";

@@ -10,6 +10,7 @@ import useLogout from "../../hooks/useLogout";
 import ColorModeSwitch from "../ColorModeSwitch";
 import LogoSvg from "./LogoSvg";
 import LoginForm from "../Forms/LoginForm";
+import useShowToast from "../../hooks/useShowToast";
 
 const Navbar: FC<{}> = () => {
   const {
@@ -30,6 +31,7 @@ const Navbar: FC<{}> = () => {
   //   Colors.primaryColor,
   //   Colors.secondaryColor,
   // );
+  const showToast = useShowToast();
 
   const handleClick = (): void => {
     if (!isSideMenuOpen) {
@@ -88,7 +90,23 @@ const Navbar: FC<{}> = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/zen" className="nav-links" onClick={onSideMenuClose}>
+                <Link
+                  to={authUser ? "/zen" : ""}
+                  className="nav-links"
+                  onClick={(e) => {
+                    if (!authUser || authUser.role === "User") {
+                      e.preventDefault();
+                      showToast(
+                        "Unauthorized",
+                        "This is a premium feature",
+                        "info",
+                        "zen",
+                      );
+                    } else {
+                      onSideMenuClose();
+                    }
+                  }}
+                >
                   Zen
                 </Link>
               </li>

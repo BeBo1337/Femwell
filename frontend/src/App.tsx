@@ -21,7 +21,7 @@ import LiveChatCenter from "./pages/LiveChatCenter";
 import Zen from "./pages/Zen";
 
 const config = {
-  initialColorMode: "light",
+  initialColorMode: "dark",
   useSystemColorMode: false,
 };
 
@@ -99,7 +99,16 @@ const App: FC<{}> = () => {
             path="/account"
             element={authUser ? <AccountSettings /> : <Navigate to="/" />}
           />
-          <Route path="/zen" element={<Zen />} />
+          <Route
+            path="/zen"
+            element={
+              authUser && authUser.role !== "User" ? (
+                <Zen />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
           <Route
             path="/livechats"
             element={

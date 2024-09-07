@@ -6,13 +6,19 @@ import "react-multi-carousel/lib/styles.css";
 import "../assets/Carousel.css";
 import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faCircleArrowRight } from "@fortawesome/free-solid-svg-icons/faCircleArrowRight";
+import { useNavigate } from "react-router-dom";
+import useAuthStore from "../store/authStore";
+import useShowToast from "../hooks/useShowToast";
 
 interface CarouselProps {
   label?: string;
 }
 
 const CarouselComponent: FC<CarouselProps> = ({}) => {
+  const authUser = useAuthStore((state) => state.user);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const navigate = useNavigate();
+  const showToast = useShowToast();
 
   useEffect(() => {
     const handleResize = () => {
@@ -51,32 +57,73 @@ const CarouselComponent: FC<CarouselProps> = ({}) => {
     },
   };
 
+  const goToZen = () => {
+    if (authUser) {
+      authUser.role !== "User"
+        ? navigate("/zen")
+        : showToast("Unauthorized", "This is a premium feature", "info", "zen");
+    } else {
+      showToast("Error", "Please log in to use this feature", "error", "zen");
+    }
+  };
+
+  const goToCommunity = () => {
+    navigate("/community");
+  };
+
+  const goToION = () => {
+    navigate("/ION");
+  };
+
+  const goToChat = () => {
+    showToast("Error", "Please log in to use this feature", "error", "zen");
+  };
   const carouselItems = [
     {
-      label: "Here for you 1",
-      content: "In eget dui ut mi ultrices convallis non at mi.",
-    },
-    {
-      label: "Here for you 2",
-      content: "Ut sagittis sapien et libero suscipit placerat.",
-    },
-    {
-      label: "Here for you 3",
+      label: "Reach Zen",
       content:
-        "In felis odio, euismod vel vulputate in, malesuada luctus purus.",
+        "Come and check out our amazing expertly made video gallery tailored just for you!",
+      image: "/ForYou1.png",
+      buttonText: "Join Here",
+      onClickFunction: goToZen,
     },
     {
-      label: "Here for you 4",
+      label: "Our Community",
       content:
-        "Praesent pretium nibh eget lacus sagittis, id faucibus leo elementum.",
+        "Jump into our vibrant community and share your journey! Connect, inspire, and grow together.",
+      image: "/ForYou2.png",
+      buttonText: "Click Here",
+      onClickFunction: goToCommunity,
     },
     {
-      label: "Here for you 5",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      label: "Online Notebook",
+      content:
+        "Explore our article section and find expert insights about your process",
+      image: "/Article5.png",
+      buttonText: "Read More",
+      onClickFunction: goToION,
     },
     {
-      label: "Here for you 6",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      label: "Expert LiveChat",
+      content:
+        "Feeling lost or distressed? Start a live chat session with one of our Padullas and let us assist you!",
+      image: "/ForYou5.png",
+      buttonText: "Start Now",
+      onClickFunction: goToChat,
+    },
+    {
+      label: "Femwell Podcast",
+      content:
+        "We are excited to annouce we will start our very own Podcast soon! Available on Femwell & Spotify!",
+      image: "/Podcast.png",
+      buttonText: "Coming Soon",
+    },
+    {
+      label: "Femwell Experts",
+      content:
+        "Schedule a doctor checkup with one of our experts for medical assesment and questions",
+      image: "/ForYou6.png",
+      buttonText: "Coming Soon",
     },
   ];
 
@@ -111,7 +158,14 @@ const CarouselComponent: FC<CarouselProps> = ({}) => {
         renderButtonGroupOutside={true}
       >
         {carouselItems.map((item, index) => (
-          <CarouselItem key={index} label={item.label} content={item.content} />
+          <CarouselItem
+            key={index}
+            label={item.label}
+            content={item.content}
+            image={item.image}
+            buttonText={item.buttonText}
+            onClickFunction={item.onClickFunction}
+          />
         ))}
       </Carousel>
     </div>

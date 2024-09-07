@@ -154,7 +154,7 @@ const ION = () => {
                   {allArticles.map((article) => (
                     <Article
                       key={article.id}
-                      image="/sunset.jpg"
+                      image={article.image}
                       title={article.title}
                       summary={
                         article.summary ||

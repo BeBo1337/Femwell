@@ -60,7 +60,9 @@ const Sidebar: FC<SideBarProps> = ({}) => {
         </>
       ) : (
         <>
-          <Text pl={2}>Welcome to Community Hub!</Text>
+          <Text hidden={!isLargerThan760} pl={2}>
+            Welcome to Community Hub!
+          </Text>
         </>
       )}
 

@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import useAuthStore from "../../store/authStore";
 import useLogout from "../../hooks/useLogout";
+import useShowToast from "../../hooks/useShowToast";
 
 interface SideMenuProps {
   isOpen: boolean;
@@ -29,6 +30,7 @@ const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose, onInputFormOpen }) => {
   const navigate = useNavigate();
   const { logout } = useLogout();
   const authUser = useAuthStore((state) => state.user);
+  const showToast = useShowToast();
 
   return (
     <Drawer
@@ -115,13 +117,23 @@ const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose, onInputFormOpen }) => {
             <Button
               colorScheme="pink"
               w="full"
-              onClick={() => {
-                onClose();
-                navigate("/zen");
+              onClick={(e) => {
+                if (!authUser || authUser.role === "User") {
+                  e.preventDefault();
+                  showToast(
+                    "Unauthorized",
+                    "This is a premium feature",
+                    "info",
+                    "zen",
+                  );
+                } else {
+                  onClose();
+                }
               }}
             >
               Zen
             </Button>
+
             {!authUser && (
               <Button
                 colorScheme="pink"

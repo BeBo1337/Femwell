@@ -45,7 +45,7 @@
   color: var(--secondary-color);
 }
 
-.carousel-item p {
+.carousel-item {
   margin: 0;
   font-size: 1em;
   color: var(--secondary-color);
