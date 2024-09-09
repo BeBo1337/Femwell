@@ -4,12 +4,12 @@ import useAuthStore from "../store/authStore";
 import { SET_MESSAGE_SEEN_MUTATION } from "../utils/wolverineRequests";
 import axios from "axios";
 import { print } from "graphql";
-import useChatStore from "../store/chatStore";
+// import useChatStore from "../store/chatStore";
 
 const useSetMessagesSeen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const authUser = useAuthStore((state) => state.user);
-  const setSeen = useChatStore((state) => state.setMsgSeen);
+  // const setSeen = useChatStore((state) => state.setMsgSeen);
   const showToast = useShowToast();
 
   const handleSetMessageSeen = async (liveChatId: number) => {

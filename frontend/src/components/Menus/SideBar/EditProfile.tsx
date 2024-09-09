@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPen } from "@fortawesome/free-solid-svg-icons";
 import useAuthStore from "../../../store/authStore";
 import useShowToast from "../../../hooks/useShowToast";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface SideBarProps {
   btnText?: string;
@@ -19,10 +19,11 @@ const EditProfile: FC<SideBarProps> = ({}) => {
 
   const authUser = useAuthStore((state) => state.user);
   const showToast = useShowToast();
+  const navigate = useNavigate();
 
   const handleEditProfile = () => {
     if (authUser) {
-      <Navigate to="/account" />;
+      navigate("/account");
     } else {
       showToast(
         "Error",

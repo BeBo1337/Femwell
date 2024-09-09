@@ -4,14 +4,21 @@ import {
   Switch,
   useColorMode,
   useColorModeValue,
+  useMediaQuery,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Colors } from "../utils/colorsConstants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 
-const ColorModeSwitch = () => {
+type ColorModeSwitchProps = {
+  navbar?: boolean;
+};
+
+const ColorModeSwitch: FC<ColorModeSwitchProps> = ({ navbar = false }) => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const [isLargerThan930] = useMediaQuery("(min-width: 930px)");
+  const [isLargerThan500] = useMediaQuery("(min-width: 500px)");
   const text = useColorModeValue("dark", "light");
 
   const [isChecked, setIsChecked] = useState(colorMode === "dark");
@@ -30,7 +37,9 @@ const ColorModeSwitch = () => {
 
   return (
     <Flex justifyContent={"center"} alignItems={"center"}>
-      <Text mr={2}>{mode}</Text>
+      <Text hidden={navbar && isLargerThan930} mr={2}>
+        {mode}
+      </Text>
       <FontAwesomeIcon
         icon={colorMode === "dark" ? faMoon : faSun}
         color={
@@ -38,7 +47,7 @@ const ColorModeSwitch = () => {
         }
       />
       <Switch
-        size="lg"
+        size={isLargerThan500 ? "lg" : "md"}
         aria-label={`Switch to ${text} mode`}
         color="current"
         marginLeft="2"

@@ -1,19 +1,15 @@
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Box, Flex, useMediaQuery, Text, AspectRatio } from "@chakra-ui/react";
-import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
 import { VideoModel } from "../models/video.model";
 
 interface VideoProps {
   video: VideoModel;
-  link?: string;
   indexChange: number;
 }
 
-const MotionButton = motion(Box);
-
-const Video: FC<VideoProps> = ({ video, link, indexChange }) => {
+const Video: FC<VideoProps> = ({ video, indexChange }) => {
   const [isLargerThan330] = useMediaQuery("(min-width: 330px)");
   const [isLargerThan600] = useMediaQuery("(min-width: 600px)");
   const [isLargerThan930] = useMediaQuery("(min-width: 930px)");
@@ -121,9 +117,7 @@ const Video: FC<VideoProps> = ({ video, link, indexChange }) => {
             <>
               <iframe
                 title={video.title}
-                src={
-                  "https://femwell-videos.s3.amazonaws.com/WhatIsAnAbortion.mp4"
-                }
+                src={video.link}
                 allowFullScreen
                 allow="autoplay"
               />

@@ -14,7 +14,7 @@ import { FC, useEffect, useState } from "react";
 import videos from "../utils/AllVideos";
 import { VideoModel } from "../models/video.model";
 import Video from "../components/Video";
-import useAuthStore from "../store/authStore";
+// import useAuthStore from "../store/authStore";
 
 const Zen: FC<{}> = () => {
   const [isLargerThan600] = useMediaQuery("(min-width: 600px)");
@@ -26,9 +26,9 @@ const Zen: FC<{}> = () => {
 
   const [tabChangeCounter, setTabChangeCounter] = useState(0);
   const [tabIndex, setTabIndex] = useState(0);
-  const authUser = useAuthStore((state) => state.user);
+  // const authUser = useAuthStore((state) => state.user);
   const panelBackgoundColor = useColorModeValue("white", "#533142");
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {}, []);
 
@@ -44,7 +44,7 @@ const Zen: FC<{}> = () => {
         maxWidth={isLargerThan930 ? "1140px" : "100%"}
         mx="auto"
       >
-        <Skeleton fadeDuration={1} isLoaded={!isLoading}>
+        <Skeleton fadeDuration={1} isLoaded={true}>
           <Tabs
             orientation={"vertical"}
             ml={isLargerThan930 ? 20 : isLargerThan650 ? 6 : ""}
@@ -64,7 +64,7 @@ const Zen: FC<{}> = () => {
               height={"fit-content"}
               maxW={isLargerThan1140 ? "70vw" : ""}
             >
-              {allVids.map((video, index) => (
+              {allVids.map((video) => (
                 <TabPanel
                   pb={3}
                   pt={3}
@@ -72,11 +72,7 @@ const Zen: FC<{}> = () => {
                   justifyContent={"flex-start"}
                   px={2}
                 >
-                  <Video
-                    video={video}
-                    link="https://google.com"
-                    indexChange={tabChangeCounter}
-                  />
+                  <Video video={video} indexChange={tabChangeCounter} />
                 </TabPanel>
               ))}
             </TabPanels>
@@ -96,6 +92,7 @@ const Zen: FC<{}> = () => {
                     <Text
                       fontStyle={"italic"}
                       fontWeight={tabIndex === index ? "bold" : "300"}
+                      whiteSpace={"normal"}
                     >
                       {video.title}
                     </Text>
@@ -103,7 +100,7 @@ const Zen: FC<{}> = () => {
                 ))}
 
               {!isLargerThan600 &&
-                allVids.map((video, index) => (
+                allVids.map((video) => (
                   <Tab
                     py={4}
                     key={video.id}
@@ -117,11 +114,7 @@ const Zen: FC<{}> = () => {
                     cursor={"default"}
                     color={""}
                   >
-                    <Video
-                      video={video}
-                      link="https://google.com"
-                      indexChange={tabChangeCounter}
-                    />
+                    <Video video={video} indexChange={tabChangeCounter} />
                   </Tab>
                 ))}
             </TabList>

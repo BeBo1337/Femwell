@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { useDisclosure, useMediaQuery, Text } from "@chakra-ui/react";
+import { useDisclosure, useMediaQuery, Text, Flex } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../assets/Navbar.css";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -50,17 +50,19 @@ const Navbar: FC<{}> = () => {
         // }}
       >
         <div className="navbar-container">
-          <Link to="/" className="navbar-logo" onClick={onSideMenuClose}>
-            <LogoSvg
-              fillColor="white"
-              mt="0"
-              width={isLargerThan500 ? "100px" : "80px"}
-            />
-            <Text mt={"6px"} fontSize={24} fontFamily={"kalam"}>
-              {isLargerThan500 ? "Femwell " : ""}
-            </Text>
-          </Link>
-          <ColorModeSwitch />
+          <Flex gap={6}>
+            <Link to="/" className="navbar-logo" onClick={onSideMenuClose}>
+              <LogoSvg
+                fillColor="white"
+                mt="0"
+                width={isLargerThan500 ? "100px" : "80px"}
+              />
+              <Text mt={"6px"} fontSize={24} fontFamily={"kalam"}>
+                {isLargerThan500 ? "Femwell " : ""}
+              </Text>
+            </Link>
+            <ColorModeSwitch navbar={true} />
+          </Flex>
           <div className="nav-right-section">
             <div className="menu-icon" onClick={handleClick}>
               <FontAwesomeIcon icon={isSideMenuOpen ? faTimes : faBars} />
